@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-class FileHandling
+class EmployeeData
 {	
 	public Scanner sobj;
 	public int id;
@@ -26,7 +26,8 @@ class FileHandling
 		{
 			return true;
 		}
-		else {
+		else 
+		{
 			return false;
 		}
 	}
@@ -44,15 +45,19 @@ class FileHandling
 		randomAccessFile.seek(0);
         StringBuilder fileContent = new StringBuilder();
         int data;
-        while ((data = randomAccessFile.read()) != -1) {
+        while ((data = randomAccessFile.read()) != -1) 
+		{
             fileContent.append((char) data);
         }
         randomAccessFile.close();
         
         // Check if the file content is empty
-        if (fileContent.length() == 0) {
+        if (fileContent.length() == 0) 
+		{
             System.out.println("File is empty.");
-        } else {
+        } 
+		else 
+		{
             System.out.println("File content: \n" + fileContent.toString());
         }
 	}
@@ -60,11 +65,13 @@ class FileHandling
 	
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// to extract file from line
-	public int extractIdFromLine(String line) {
+	public int extractIdFromLine(String line) 
+	{
 	    int id = 0;
 	    String[] parts = line.split(":");
 	    for (String part : parts) {
-	        if (part.contains("Id")) {
+	        if (part.contains("Id")) 
+			{
 	            String idStr = part.split("=")[1].trim();
 	            id = Integer.parseInt(idStr);
 	            break;
@@ -73,19 +80,21 @@ class FileHandling
 	    return id;
 	}
 	
-	
-	
-	
-	public int getLastIdFromFile() {
+	public int getLastIdFromFile() 
+	{
 	    int highestId = 0;
 
-	    try (BufferedReader reader = new BufferedReader(new FileReader(fo))) {
+	    try (BufferedReader reader = new BufferedReader(new FileReader(fo))) 
+		{
 	        String line;
-	        while ((line = reader.readLine()) != null) {
+	        while ((line = reader.readLine()) != null) 
+			{
 	            int id = extractIdFromLine(line);
 	            highestId = Math.max(highestId, id);
 	        }
-	    } catch (IOException e) {
+	    } 
+		catch (IOException e) 
+		{
 	        e.printStackTrace();
 	    }
 	    
@@ -94,7 +103,8 @@ class FileHandling
 
 	public void InsertData() throws Exception
 	{
-		try (PrintWriter writer = new PrintWriter(new FileWriter(fo, true))) {
+		try (PrintWriter writer = new PrintWriter(new FileWriter(fo, true))) 
+		{
 	        System.out.println("Enter the all details of new employee : \n");
 	        System.out.println("Enter name : ");
 	        String name = this.sobj.next();
@@ -107,7 +117,9 @@ class FileHandling
 	        int highestId = getLastIdFromFile();
 	        writer.println("Id = " + (highestId+1) + " : Name = " + name + " : Salary = " + salary + " : City = " + city + " : Age = " + age + ".");
 	        id++;
-	    } catch (IOException e) {
+	    } 
+		catch (IOException e) 
+		{
 	        e.printStackTrace();
 	    }
 	}
@@ -139,9 +151,13 @@ class FileHandling
 	    int targetId = sobj.nextInt();
 
 	    String employeeRecord = getEmployeeRecordById(targetId);
-	    if (employeeRecord != null) {
+
+	    if (employeeRecord != null) 
+		{
 	        System.out.println("Employee record: " + employeeRecord);
-	    } else {
+	    } 
+		else 
+		{
 	        System.out.println("Employee with ID " + targetId + " not found.");
 	    }
 	}
@@ -155,14 +171,18 @@ class FileHandling
 	// Update data
 	
 	
-	public void updateEmployeeAttributeById(int targetId) throws Exception {
+	public void updateEmployeeAttributeById(int targetId) throws Exception 
+	{
 	    List<String> updatedRecords = new ArrayList<>();
 
-	    try (BufferedReader reader = new BufferedReader(new FileReader(fo))) {
+	    try (BufferedReader reader = new BufferedReader(new FileReader(fo))) 
+		{
 	        String line;
-	        while ((line = reader.readLine()) != null) {
+	        while ((line = reader.readLine()) != null) 
+			{
 	            int id = extractIdFromLine(line);
-	            if (id == targetId) {
+	            if (id == targetId) 
+				{
 	                System.out.println("Enter updated name: ");
 	                String updatedName = sobj.next();
 	                System.out.println("Enter updated salary: ");
@@ -179,23 +199,32 @@ class FileHandling
 	            }
 	            updatedRecords.add(line);
 	        }
-	    } catch (IOException e) {
+	    } 
+		catch (IOException e) 
+		{
 	        e.printStackTrace();
 	    }
 
-	    try (PrintWriter writer = new PrintWriter(new FileWriter(fo))) {
-	        for (String record : updatedRecords) {
+	    try (PrintWriter writer = new PrintWriter(new FileWriter(fo))) 
+		{
+	        for (String record : updatedRecords) 
+			{
 	            writer.println(record);
 	        }
-	    } catch (IOException e) {
+	    } 
+		catch (IOException e) 
+		{
 	        e.printStackTrace();
 	    }
 	}
 
-	private String updateAgeAttribute(String line, int updatedAge) {
+	private String updateAgeAttribute(String line, int updatedAge) 
+	{
 	    String[] parts = line.split(": ");
-	    for (int i = 0; i < parts.length; i++) {
-	        if (parts[i].startsWith("Age = ")) {
+	    for (int i = 0; i < parts.length; i++) 
+		{
+	        if (parts[i].startsWith("Age = ")) 
+			{
 	            parts[i] = "Age = " + updatedAge + ".";
 	            break;
 	        }
@@ -204,7 +233,8 @@ class FileHandling
 	}
 
 
-	private String updateAttribute(String line, String attributeName, String updatedValue) {
+	private String updateAttribute(String line, String attributeName, String updatedValue) 
+	{
 	    return line.replaceFirst(attributeName + " = .*? :", attributeName + " = " + updatedValue + " :");
 	}                          
 	    
@@ -215,23 +245,32 @@ class FileHandling
     {
         List<String> remainingRecords = new ArrayList<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(fo))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fo))) 
+		{
             String line;
-            while ((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) 
+			{
                 int id = extractIdFromLine(line);
-                if (id != targetId) {
+                if (id != targetId) 
+				{
                     remainingRecords.add(line);
                 }
             }
-        } catch (IOException e) {
+        } 
+		catch (IOException e) 
+		{
             e.printStackTrace();
         }
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter(fo))) {
-            for (String record : remainingRecords) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fo))) 
+		{
+            for (String record : remainingRecords) 
+			{
                 writer.println(record);
             }
-        } catch (IOException e) {
+        } 
+		catch (IOException e) 
+		{
             e.printStackTrace();
         }
     } 
